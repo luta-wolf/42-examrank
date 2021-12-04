@@ -23,3 +23,8 @@ Subjects are in the folder of each exercises, along with a solution.
 	}
 
 ![image](https://user-images.githubusercontent.com/58044383/144717745-4c40df85-9587-46ce-a3e9-ab3f956d1827.png)
+	>$ ./a.out 
+	H - 72
+	e - 101
+	l - 108
+	p - 112
