@@ -21,7 +21,7 @@ Subjects are in the folder of each exercises, along with a solution.
 			i++;
 		}
 	}
-Получит символ и его значение ASCII:
+Получим символ и его значение ASCII:
 
 	>$ ./a.out 
 	H - 72
