@@ -1,196 +1,59 @@
-#include "mini_paint.h"
-
-int	ft_strlen(char *str)
+#include <stdio.h>
+#include <unistd.h>
+#include <math.h>
+int ft_error(FILE *file)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
+	write(1, "Error: Operation file corrupted\n", 32);
+	fclose(file);
+	return 1;
 }
-
-int	error(char *str)
+int main(int argc, char **argv)
 {
-	write(1, str, ft_strlen(str));
-	return (1);
-}
-
-int	parser(char **argv, t_data *data)
-{
-	int	c;
-
-	data->fp = fopen(argv[1], "r");
-	if (data->fp == NULL) // если файл не открылся или неверный путь
+	FILE *file;
+	int i =-1, j, height, width, arg;
+	float x, y, radius, res;
+	char back, c, symb;
+	if(argc != 2)
+		return(write(1, "Error: argument\n", 16) && 1);
+	if(!(file = fopen(argv[1], "r")))
+		return(write(1, "Error: Operation file corrupted\n", 32) && 1);
+	if((arg = fscanf(file, "%d %d %c\n", &width, &height, &back)) != 3)
+		return(ft_error(file));
+	if(height <= 0 || height > 300 || width <=0 || width > 300)
+		return(ft_error(file));
+	char arr[height][width];
+	while(++i < height)
 	{
-		error("Error: Operation file corrupted\n");
-		return (1);
+		j = -1;
+		while(++j < width)
+			arr[i][j] = back;
 	}
-	c = fscanf(data->fp, "%d %d %c\n", &data->sc_width, &data->sc_height,
-			   &data->ch); // читаем ширину, высоту и символ поля. Возвращает
-			   // количество верно считанных переменных
-   if (c <= 0 || c != 3) // если есть ошибки, неверный тип и тд
+	while((arg = fscanf(file, "%c %f %f %f %c\n", &c, &x, &y, &radius, &symb)) == 5)
 	{
-		error("Error: Operation file corrupted\n");
-		return (1);
-	}
-   if ((data->sc_height > 300 || data->sc_height <= 0) || (data->sc_width > 300
-   		|| data->sc_width <= 0)) // если заданы неверно границы поля
-   {
-		error("Error: Operation file corrupted\n");
-		return (1);
-	}
-   return (0);
-}
-
-
-void	free_func(t_data *data, char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->sc_height)
-		free(arr[i++]);
-	free(arr);
-	fclose(data->fp);
-}
-
-void	full_matrix(t_data *data, char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->sc_height)
-	{
-		j = 0;
-		while (j < data->sc_width)
+		if((c != 'c' && c != 'C') || radius <= 0)
+			return(ft_error(file));
+		i = -1;
+		while(++i < height)
 		{
-			arr[i][j] = data->ch;
-			j++;
+			j = -1;
+			while(++j < width)
+			{
+				res = sqrt(pow(i - y, 2) + pow(j - x, 2));
+				if(res <= radius)
+					if((radius - res < 1 && c == 'c') || c == 'C')
+						arr[i][j] = symb;
+			}
 		}
-		i++;
 	}
-}
-
-void	print_res(t_data *data, char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->sc_height)
+	if(arg > 0 && arg !=5)
+		return(ft_error(file));
+	i = -1;
+	while(++i < height)
 	{
-		j = 0;
-		while (j < data->sc_width)
-		{
+		j = -1;
+		while(++j < width)
 			write(1, &arr[i][j], 1);
-			j++;
-		}
 		write(1, "\n", 1);
-		i++;
 	}
-}
-
-float	find_pixel(t_data *data, float x_0, float y_0)
-{
-	return (sqrtf((data->x - x_0) * (data->x - x_0) + (data->y - y_0) *
-		(data->y-y_0)));
-}
-
-void draw_full_circle(t_data *data, char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->sc_height)
-	{
-		j = 0;
-		while (j < data->sc_width)
-		{
-			if (data->radius >= find_pixel(data, j ,i))
-				arr[i][j] = data->fill;
-			j++;
-		}
-		i++;
-	}
-}
-
-void draw_empty_circle(t_data *data, char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->sc_height)
-	{
-		j = 0;
-		while (j < data->sc_width)
-		{
-			if (data->radius - 1 > find_pixel(data, j ,i))
-				arr[i][j] = arr[i][j];
-			else if (data->radius >= find_pixel(data, j ,i))
-				arr[i][j] = data->fill;
-			j++;
-		}
-		i++;
-	}
-}
-
-int	general_func(char **argv)
-{
-	t_data	data;
-	char	**arr;
-	int		i;
-	int		c;
-
-	if (parser(argv, &data))
-	{
-		fclose(data.fp);
-		return (1);
-	}
-	arr = (char **)malloc((data.sc_height + 1) * sizeof(char *));
-	i = 0;
-	while (i < data.sc_height)
-		arr[i++] = (char *)malloc((data.sc_width + 1) * sizeof(char));
-	full_matrix(&data, arr); // заполнение всей матрицы символом поля
-	while ((c = fscanf(data.fp, "%c %f %f %f %c\n", &data.c, &data.x,
-					   &data.y, &data.radius, &data.fill)) == 5)
-	{
-		if ((data.c != 'c' && data.c != 'C') || data.radius <= 0)
-		{
-			error("Error: Operation file corrupted\n");
-			free_func(&data, arr);
-			return (1);
-		}
-		if (data.c == 'C')
-			draw_full_circle(&data, arr); // заполненный внутри символами круг
-		if (data.c == 'c')
-			draw_empty_circle(&data, arr); // только граница круга
-	}
-	if (c != -1) // ошибка в файле с параметрами, -1 - достигнут конец файла
-	{
-		error("Error: Operation file corrupted\n");
-		free_func(&data, arr);
-		return (1);
-	}
-	print_res(&data, arr);
-	free_func(&data, arr);
-	return (0);
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc == 2)
-	{
-		if (general_func(argv))
-			return (1);
-	}
-	else
-	{
-		write(1, "Error: argument\n", ft_strlen("Error: argument\n"));
-		return (1);
-	}
-	return (0);
+	return(fclose(file) && 0);
 }

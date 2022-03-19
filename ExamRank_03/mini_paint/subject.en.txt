@@ -12,7 +12,7 @@ $> ./mini_paint | cat -e
 Error: argument$
 $> ./mini_paint do not fear mathematics | cat -e
 Error: argument$
-$> 
+$>
 
 If any problem occurs while you open and/or read the "operation file" write "Error: Operation file corrupted" followed by a \n in STDOUT
 
@@ -27,7 +27,7 @@ There must be one space between each variable in a line
 WIDTH HEIGHT BACKGROUND_CHAR
 This line is always the first line of the file and it defines the zone where to draw. Your program should not display anything outside the draw zone. It must be there only once.
 - WIDTH: must be a int with 0 < WIDTH <= 300, the horizontal number of characters to use for the draw zone
-- HEIGHT: must be a int with 0 < HEIGHT <= 300, the vertical number of characters to use for the draw zone 
+- HEIGHT: must be a int with 0 < HEIGHT <= 300, the vertical number of characters to use for the draw zone
 - BACKGROUND_CHAR: any empty space will be filled with BACKGROUND_CHAR
 
 c X Y RADIUS CHAR
@@ -51,7 +51,7 @@ The draw zone is divided in rectangles that can contain one character each (beca
 To make everything easier, we will use only the top left corner of the pixel to know if that pixel is in a circle or not
 If the distance between the top left corner of a pixel and the center of a circle is lower or equal to the radius of the circle, the pixel is part of the circle
 but also:
-	A pixel with a top left corner with a distance bigger or equal than 1 from the border of a circle is not part of an empty circle 
+	A pixel with a top left corner with a distance bigger or equal than 1 from the border of a circle is not part of an empty circle
 	A pixel with a top left corner with a distance lower than 1 from the border of a circle is part of an empty circle.
 
 You should look at the image while reading the next few lines. It represents a terminal. We've set a draw zone of WIDTH 5 and HEIGHT 3.
@@ -76,7 +76,7 @@ $> ./mini_paint | cat -e
 Error: argument$
 $> ./mini_paint do not fear mathematics | cat -e
 Error: argument$
-$> 
+$>
 
 Если какая-либо проблема возникает при открытии и / или чтении "операционного файла", напишите "ошибка: операционный файл поврежден", а затем \n в STDOUT
 

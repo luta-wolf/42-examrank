@@ -1,196 +1,67 @@
-#include "micro_paint.h"
-
-int	ft_strlen(char *str)
+#include <unistd.h>
+#include <stdio.h>
+int ft_error(FILE *file)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
+	write(1, "Error: Operation file corrupted\n", 32);
+	fclose(file);
+	return 1;
 }
-
-int	error(char *str)
+int ft_check(int i, int j, float x, float y, float w, float h)
 {
-	write(1, str, ft_strlen(str));
-	return (1);
+	if(i < y || i > y +h || j < x || j > x + w)
+		return 0;
+	if(i - y < 1 || y + h - i < 1 || j - x < 1 || x + w - j < 1)
+		return 2;
+	return 1;
 }
-
-int	parser(char **argv, t_data *data)
+int main(int argc, char **argv)
 {
-	int	c;
-
-	data->fp = fopen(argv[1], "r");
-	if (data->fp == NULL) // если файл не открылся или неверный путь
+	FILE *file;
+	int i = -1, j, height, width, arg;
+	float x, y, w, h;
+	char back, c, symb;
+	if(argc != 2)
+		return(write(1, "Error: argument\n", 16) && 1);
+	if(!(file = fopen(argv[1], "r")))
+		return(ft_error(file));
+	if((arg = fscanf(file, "%d %d %c\n", &width, &height, &back)) != 3)
+		return(ft_error(file));
+	if(height <= 0 || height > 300 || width <= 0 || width > 300)
+		return(ft_error(file));
+	char arr[height][width];
+	while (++i < height)
 	{
-		error("Error: Operation file corrupted\n");
-		return (1);
+		j = -1;
+		while (++j < width)
+			arr[i][j] = back;
 	}
-	c = fscanf(data->fp, "%d %d %c\n", &data->sc_width, &data->sc_height,
-			&data->ch); // читаем ширину, высоту и символ поля. Возвращает
-			// количество верно считанных переменных
-	if (c <= 0 || c != 3) // если есть ошибки, неверный тип и тд
+	while((arg = fscanf(file, "%c %f %f %f %f %c\n", &c, &x, &y, &w, &h, &symb)) == 6)
 	{
-		error("Error: Operation file corrupted\n");
-		return (1);
-	}
-	if ((data->sc_height > 300 || data->sc_height <= 0) || (data->sc_width > 300
-			|| data->sc_width <= 0)) // если заданы неверно границы поля
-	{
-		error("Error: Operation file corrupted\n");
-		return (1);
-	}
-	return (0);
-}
-
-void	draw_empty_rec(t_data *data, char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->sc_height)
-	{
-		j = 0;
-		while (j < data->sc_width)
+		if((c != 'r' && c != 'R') || w <= 0 || h <= 0)
+			return(ft_error(file));
+		i = -1;
+		while (++i < height)
 		{
-			if ((float)i >= data->y + 1 && (float)j >= data->x + 1 && (
-					(float)i <= data->height + data->y - 1) && ((float)j
-					<= data->width + data->x - 1))
-				arr[i][j] = arr[i][j];
-			else if (((float)i >= data->y) && ((float)j >= data->x) && (
-					(float)i <= data->height + data->y) && ((float)j
-					<= data->width + data->x))
-				arr[i][j] = data->fill;
-			j++;
+			j = -1;
+			while (++j < width)
+			{
+				if((ft_check(i, j, x, y, w, h) == 2 && c == 'r') || (ft_check(i, j, x, y, w, h) && c  == 'R'))
+					arr[i][j] = symb;
+			}
 		}
-		i++;
 	}
-}
-
-void	draw_full_rec(t_data *data, char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->sc_height)
+	if(arg > 0 && arg !=6)
+		return(ft_error(file));
+		i = -1;
+	while(++i < height)
 	{
-		j = 0;
-		while (j < data->sc_width)
-		{
-			if (((float)i >= data->y) && ((float)j >= data->x) && ((float)i
-					<= data->height + data->y) && ((float)j
-					<= data->width + data->x))
-				arr[i][j] = data->fill;
-			j++;
-		}
-		i++;
-	}
-}
-
-void	free_func(t_data *data, char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->sc_height)
-		free(arr[i++]);
-	free(arr);
-	fclose(data->fp);
-}
-
-void	full_matrix(t_data *data, char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->sc_height)
-	{
-		j = 0;
-		while (j < data->sc_width)
-		{
-			arr[i][j] = data->ch;
-			j++;
-		}
-		i++;
-	}
-}
-
-void	print_res(t_data *data, char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->sc_height)
-	{
-		j = 0;
-		while (j < data->sc_width)
+		j = -1;
+		while(++j < width)
 		{
 			write(1, &arr[i][j], 1);
-			j++;
+			write(1, " ", 1);
 		}
 		write(1, "\n", 1);
-		i++;
 	}
-}
-
-int	general_func(char **argv)
-{
-	t_data	data;
-	char	**arr;
-	int		i;
-	int		c;
-
-	if (parser(argv, &data))
-	{
-		fclose(data.fp);
-		return (1);
-	}
-	arr = (char **)malloc((data.sc_height + 1) * sizeof(char *));
-	i = 0;
-	while (i < data.sc_height)
-		arr[i++] = (char *)malloc((data.sc_width + 1) * sizeof(char));
-	full_matrix(&data, arr); // заполнение всей матрицы символом поля
-	while ((c = fscanf(data.fp, "%c %f %f %f %f %c\n", &data.r, &data.x,
-				  &data.y, &data.width, &data.height, &data.fill)) == 6)
-	{
-		if ((data.r != 'r' && data.r != 'R') || data.width <= 0
-			|| data.height <= 0)
-		{
-			error("Error: Operation file corrupted\n");
-			free_func(&data, arr);
-			return (1);
-		}
-		if (data.r == 'R')
-			draw_full_rec(&data, arr); // заполненный внутри символами прямоугольник
-		if (data.r == 'r')
-			draw_empty_rec(&data, arr); // только граница прямоугольника
-	}
-	if (c != -1) // ошибка в файле с параметрами, -1 - достигнут конец файла
-	{
-		error("Error: Operation file corrupted\n");
-		free_func(&data, arr);
-		return (1);
-	}
-	print_res(&data, arr);
-	free_func(&data, arr);
-	return (0);
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc == 2)
-	{
-		if (general_func(argv))
-			return (1);
-	}
-	else
-	{
-		write(1, "Error: argument\n", ft_strlen("Error: argument\n"));
-		return (1);
-	}
-	return (0);
+	return(fclose(file) && 0);
 }
