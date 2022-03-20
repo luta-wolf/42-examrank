@@ -1,0 +1,1 @@
+- Разбор [задания](https://www.youtube.com/watch?v=YL1TWfqYl4o "https://www.youtube.com/watch?v=YL1TWfqYl4o").
