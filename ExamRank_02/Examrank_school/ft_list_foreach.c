@@ -1,7 +1,7 @@
-/* 
+/*
 Assignment name  : ft_list_foreach
 Expected files   : ft_list_foreach.c, ft_list.h
-Allowed functions: 
+Allowed functions:
 --------------------------------------------------------------------------------
 
 Write a function that takes a list and a function pointer, and applies this
@@ -24,7 +24,7 @@ typedef struct    s_list
     void          *data;
 }                 t_list;
 */
-/*
+
 #include "ft_list.h"
 
 void    ft_list_foreach(t_list *begin_list, void (*f)(void *))
@@ -40,4 +40,3 @@ void    ft_list_foreach(t_list *begin_list, void (*f)(void *))
     }
 }
 
-*/

@@ -20,13 +20,13 @@ $> ./pgcd 42 12 | cat -e
 6$
 $> ./pgcd 14 77 | cat -e
 7$
-$> ./pgcd 17 3 | cat -e 
+$> ./pgcd 17 3 | cat -e
 1$
 $> ./pgcd | cat -e
 $
 */
 
-/*
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -62,4 +62,3 @@ int    main(int argc, char **argv)
     printf("\n");
     return (0);
 }
-*/
