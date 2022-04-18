@@ -31,7 +31,8 @@ int	ft_printf(const char *fmt, ...) {
 			}
 			else if (*fmt == 'd') {
 				long long d = va_arg(ap, int);
-				if (d < 0) {
+				if (d < 0)
+				{
 					write(1, "-", 1);
 					g_var++;
 					d = -d;
@@ -54,7 +55,7 @@ int	ft_printf(const char *fmt, ...) {
 // #include <stdio.h>
 // int main(void)
 // {
-// 	printf("I - %d\n", printf("qwerty %s\t%d\t%x\n", "stroka1", 214714814563, -42));
-// 	printf("II - %d\n", ft_printf("qwerty %s\t%d\t%x\n", "stroka2", 214714814563, -42));
+// 	printf("I - %d\n", printf("qwerty %s\t%d\t%x\n", "stroka1", -2147483648, -42));
+// 	printf("II - %d\n", ft_printf("qwerty %s\t%d\t%x\n", "stroka2", -2147483648, -42));
 // 	return 0;
 // }
