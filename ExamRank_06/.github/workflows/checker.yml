@@ -1,0 +1,11 @@
+name: checker
+on: [push, pull_request]
+
+jobs:
+  compil_job:
+    runs-on: ubuntu-latest
+    name: checker
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker build -t checker .github/checker
+    - run: docker run -v $PWD:/.github/checker/ checker

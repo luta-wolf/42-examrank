@@ -1,0 +1,25 @@
+server: client 1 just arrived
+client 1: coucou
+server: client 1 just left
+server: client 2 just arrived
+client 2: good morning
+server: client 2 just left
+server: client 3 just arrived
+client 3: holà que tal?
+server: client 3 just left
+server: client 4 just arrived
+client 4: [32mGREEN
+client 4: 	[31mRED
+server: client 4 just left
+server: client 5 just arrived
+client 5: 
+server: client 5 just left
+server: client 6 just arrived
+client 6: [0mhello		bonjour
+server: client 6 just left
+server: client 7 just arrived
+client 7: last one
+server: client 7 just left
+server: client 8 just arrived
+client 8: ✅
+server: client 8 just left
