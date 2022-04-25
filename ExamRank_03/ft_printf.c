@@ -14,6 +14,7 @@ void	ft_puthex(unsigned dig, int len, char *sign) {
 	g_var++;
 }
 int	ft_printf(const char *fmt, ...) {
+	g_var = 0;
 	va_list	ap;
 	va_start(ap, fmt);
 	while (*fmt) {
