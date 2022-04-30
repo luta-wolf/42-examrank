@@ -34,3 +34,11 @@ int ft_printf(const char *fmt, ...)
     }
     return (va_end(ap), g_var);
 }
+
+// #include <stdio.h>
+// int main(void)
+// {
+// 	printf("I - %d\n", printf("qwerty %s\t%ld\t%x\n", "stroka1", 214714814563, -42));
+// 	printf("II - %d\n", ft_printf("qwerty %s\t%d\t%x\n", "stroka2", 214714814563, -42));
+// 	return 0;
+// }
