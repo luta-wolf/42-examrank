@@ -23,3 +23,5 @@
 
 - chmod 777 clear_cash.sh
 - ./clear_cash.sh
+
+Если я вам помог, ставьте звездочку)
