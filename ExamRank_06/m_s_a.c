@@ -14,7 +14,7 @@ typedef struct s_clients {
 t_clients   clients[1024];
 fd_set      readfds, writefds, active;
 int         fdMax = 0, idNext = 0;
-char        bufferRead[65536], bufferWrite[65536];
+char        bufferRead[120000], bufferWrite[120000];
 
 void    ftError(char *str) {
     if (str)
@@ -32,13 +32,13 @@ void    sendAll(int not) {
 }
 
 int main(int ac, char **av) {
-    if (ac != 2) 
+    if (ac != 2)
         ftError("Wrong number of arguments");
-    
+
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0)
         ftError(NULL);
-    
+
     FD_ZERO(&active);
     bzero(&clients, sizeof(clients));
     fdMax = sockfd;
@@ -46,16 +46,16 @@ int main(int ac, char **av) {
 
     struct sockaddr_in  servaddr;
     socklen_t           len;
-   	bzero(&servaddr, sizeof(servaddr)); 
-    servaddr.sin_family = AF_INET; 
+   	bzero(&servaddr, sizeof(servaddr));
+    servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = htonl(2130706433); //127.0.0.1
 	servaddr.sin_port = htons(atoi(av[1]));
-    
+
     if ((bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr))) < 0)
         ftError(NULL);
     if (listen(sockfd, 10) < 0)
         ftError(NULL);
-    
+
     while(1) {
         readfds = writefds = active;
         if (select(fdMax + 1, &readfds, &writefds, NULL, NULL) < 0)
