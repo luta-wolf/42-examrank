@@ -12,25 +12,25 @@
 - . open
 
 
-## examrank02
+## :white_check_mark: Exam Rank 02
 Нужно решить 4 задачки (по сложности 0, 1, 2, 3) с финального экзамена по бассейну.
 
-## examrank03
+## :white_check_mark: Exam Rank 03
 Написать get_next_line и printf без бонусов.
 - get_next_line.c - короткий (16 строк). Рабочий.
 - super_gnl.c - вариант на 5 строк! Рабочий.
 - ft_printf.c - вариант на 52 строки. Рабочий.
 - ft_printf2.c - вариант на 36 строк. Не проверен.
 
-## examrank04
+## :white_check_mark: Exam Rank 04
 - microshell_93.c - вариант рабочий (93 строки).
 - microshell_100.c - вариант рабочий (100 строк).
 - microshell_118.c - вариант не проверен (118 строк).
 
-## examrank05
+## :white_check_mark: Exam Rank 05
 - Вариант единственный и рабочий.
 
-## examrank06
+## Exam Rank 06  
 - mini_serv.c 	- вариант рабочий (104 строки).
 - m_s_a.c 		- вариант рабочий (104 строки).
 
