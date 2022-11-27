@@ -2,11 +2,14 @@
 
 ARGS="Wrong number of arguments"
 FATAL="Fatal error"
+ROOT_MAIN="../MyCode/mini_serv.c"
+#ROOT_MAIN="../mini_serv3.c"
 err=0
 port=0
 while [ $port -lt 1024 -o $port -gt 10000 ]; do
 	port=$RANDOM
 done
+rm -rf mini_serv log*.txt
 echo "Running tests on port $port..."
 
 check()
@@ -33,7 +36,7 @@ diff "log$1.txt" "assets/test$1" &> /dev/null
 
 ### COMPIL
 echo -e "\033[36m[+] Checking compilation...\033[0m\033[50G\c"
-clang -Wall -Wextra -Werror mini_serv.c -o mini_serv &> log.txt
+clang -Wall -Wextra -Werror $ROOT_MAIN -o mini_serv &> log.txt
 [ "$(cat log.txt)" = "" ] && echo "✅"|| { echo -e "\033[31mCompilation error...\033[0m"; cat log.txt; rm log.txt; exit 1; }
 
 
@@ -127,7 +130,6 @@ killall -q mini_serv
 
 
 ### CLEAN
-
 rm -rf mini_serv log*.txt
 
 exit $err
