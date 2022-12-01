@@ -30,9 +30,8 @@
 ## :white_check_mark: Exam Rank 05
 - Вариант единственный и рабочий.
 
-## Exam Rank 06  
-- mini_serv.c 	- вариант рабочий (104 строки).
-- m_s_a.c 		- вариант рабочий (104 строки).
+## :white_check_mark: Exam Rank 06
+- mini_serv.c 	- вариант рабочий (100 строк).
 
 ### скрипт по очистке памяти на маках.
 - clear_cash.sh
