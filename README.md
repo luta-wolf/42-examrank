@@ -1,15 +1,15 @@
 ## On the exam
 1. Enter the login and password on the examination computer
-- password: test
-- login: exam
+- password: `exam`
+- login: `exam`
 
 2. After downloading, open the terminal, enter
-- examshell
+- `examshell`
 - enter your username and password
 
 3. Open `VS Code`
-- cd /Applications/
-- . open
+- `cd /Applications/`
+- `. open`
 
 
 ## :white_check_mark: Exam Rank 02
